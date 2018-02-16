@@ -1,20 +1,96 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div class="container">
+  <div class="col-sm-12 text-center">
+    <div style="width:100%; float:left; height:20px;"></div>
+    <img src="http://www.yavirac.edu.ec/ignug/images/logoYavirac.png" alt="YAVIRAC" height="170px"/>
+    <h1>Museo Yavirac</h1>
+  </div>
+  <div class="form-group">
+    <label><strong>Artículos</strong></label>
+    <select class="form-control" id="idArticulo" [(ngModel)]="idArticuloSeleccionado" (change)="articuloSeleccionado()">
+      <option value="0" selected>Seleccione...</option>
+      <option *ngFor="let item of articulos" value={{item.id}}>{{item.titulo}}</option>
+    </select>
+    <div class="col-sm-12 text-center">
+      <button type="button" class="btn btn-primary" (click)="nuevo()">
+        <span class="fa fa-file"></span>&nbsp;Nuevo
+      </button>
+      <button type="button" class="btn btn-danger" (click)="borrar()">
+        <span class="fa fa-trash"></span>&nbsp;Borrar
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="col-sm-12" #ficha>
+        <div class="card col-sm-12" style="border:solid; border-width:1px;">
+          <div style="width:100%; float:left; height:20px;"></div>
+          <div class="col-sm-12 text-center">
+            <strong style="font-size:24px;">{{articulo.titulo}}</strong>
+          </div>
+          <div style="width:100%; float:left; height:20px;"></div>
+          <div class="col-sm-12 text-center">
+            <qr-code [value]="articulo.titulo" [size]="300"></qr-code>
+          </div>
+          <div class="card-body">
+            <div class="col-sm-12">
+              <div style="float:left; width:80%; text-align: justify">
+                Escanea este código con nuestra aplicación y descubre mucho más.
+              </div>
+              <img style="float:rigth; width:60px;" src="./../assets/images/appLogo.png"/>
+            </div>
+            <div class="col-sm-12 text-center">
+              <div style="width:100%; float:left; height:20px;"></div>
+              <img src="./../assets/images/logoYavirac.png" alt="YAVIRAC" height="70px"/>
+              <img src="./../assets/images/escudoQuito.png" alt="QUITO" height="70px"style="padding-left: 20px;"/>
+              <img src="./../assets/images/escudoEcuador.png" alt="ECUADOR" height="70px" style="padding-left: 20px;"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 text-center">
+        <div style="width:100%; float:left; height:20px;"></div>
+        <button type="button" class="btn btn-success" (click)="imprimir()">
+          <span class="fa fa-print"></span>&nbsp;Imprimir
+        </button>
+      </div>
+    </div>
+    <div class="col-sm-7">
+      <div class="card col-sm-12">
+        <div style="width:100%; float:left; height:20px;"></div>
+        <div class="form-group">
+          <label><strong>Título</strong></label>
+          <input type="text" maxlength="200" class="form-control" id="titulo" placeholder="Título" [(ngModel)]="articulo.titulo">
+        </div>
+        <div class="form-group">
+          <label><strong>Descripción</strong></label>
+          <input type="text" maxlength="400" class="form-control" id="titulo" placeholder="Título" [(ngModel)]="articulo.descripcion">
+        </div>
+        <div class="form-group">
+          <label><strong>Fotografía</strong></label>
+          <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="subirImagen($event)"/>
+          <div class="col-sm-12 text-center">
+            <button type="button" class="btn btn-success" (click)="subirPicture()">
+              <span class="fa fa-upload"></span>&nbsp;Subir
+            </button>
+          </div>
+          <div class="card" *ngIf="fotografia">
+            <div style="padding:10px; width:100%; float:left; text-align:center;">
+              <img src="{{fotografia}}" alt="Fotografía" width="70%" margin-top="10px">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 text-center">
+          <button type="button" class="btn btn-success" (click)="guardar()">
+            <span class="fa fa-save"></span>&nbsp;Guardar
+          </button>
+          <button type="button" class="btn btn-danger" (click)="cancelar()">
+            <span class="fa fa-close"></span>&nbsp;Cancelar
+          </button>
+          <div style="width:100%; float:left; height:20px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
+<div style="width:100%; float:left; height:20px;"></div>
